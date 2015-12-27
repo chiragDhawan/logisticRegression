@@ -1,0 +1,3 @@
+function logLikelihood= likelihoodLogistic(x,y,theta)
+logLikelihood= -(y' * log(sigmoid(x,theta)) + (1-y)' * log(1-sigmoid(x,theta)));
+end
