@@ -1,0 +1,67 @@
+% addpath('G:\Dataset');
+% X=load('G:\Dataset\ex4x.dat');
+% Y=load('G:\Dataset\ex4y.dat');
+% X= [ones(size(X,1),1) X];
+
+%%%%%%%%%%% Gradient descent 
+% stepSize= 0.01;
+% thetaLogisticGrad= zeros(size(X,2),1);
+% thetaRandomLogistic= randn(size(thetaLogisticGrad));
+% i=0;
+% while ~isequal(thetaLogisticGrad,thetaRandomLogistic),
+%     i=i+1;
+%     thetaRandomLogistic=thetaLogisticGrad;
+%     thetaLogisticGrad= thetaLogisticGrad -  stepSize * ( X' * (sigmoid(X,thetaLogisticGrad) - Y) );
+% end
+
+
+%%%%%%%%%%% hessian/newton method
+
+% thetaLogisticHess= zeros(size(X,2),1);
+% thetaRandomLogisticHess= randn(size(thetaLogisticHess));
+% i=0;
+% HessLogistic= (sigmoid(X ,thetaLogisticHess)' * (1- sigmoid(X,thetaLogisticHess))) * (X' * X);
+% while thetaLogisticHess~=thetaRandomLogisticHess,
+%     i=i+1;
+%     thetaRandomLogisticHess=thetaLogisticHess;
+%     thetaLogisticHess= thetaLogisticHess -  HessLogistic\( X' * (sigmoid(X,thetaLogisticHess) - Y) )
+% end
+
+% YhatLogisticHess= sigmoid(X,thetaLogisticHess); % Using sigmoid function defined in another file in this repository
+
+%%%%%%%%%%% Converting the probabilities that are in YhatLogisticHess into 0 and 1
+% for i=1:size(YhatLogisticHess,1)
+%     if YhatLogistic(i)>=0.5
+%         YhatLogisticHess(i)=1;
+%     else YhatLogisticHess(i)=0;
+%     end
+% end
+% errorLogisticHessian= size(find(Y==YhatLogisticHess),1)/ size(Y,1);
+
+%%%%%%%%% Gradient descent using backtrack line search
+% alpha= 0.5;
+% beta= 0.05;
+% thetaLogLineSearch= zeros(size(X,2),1);
+% thetaRandomLogLineSearch= randn(size(thetaLogLineSearch));
+% iter=0;
+% while ~isequal(thetaLogLineSearch,thetaRandomLogLineSearch),
+%     t=1;
+%     iter=iter+1;
+%     gradLogistic=X' * (sigmoid(X,thetaLogLineSearch) - Y);
+%     while likelihoodLogistic(X,Y,thetaLogLineSearch - t* gradLogistic) > likelihoodLogistic(X,Y,thetaLogLineSearch) - alpha * t * (gradLogistic' * gradLogistic) %%%likelihoodLogistic is defined in another file in this repository
+%             t = beta * t;
+%     end
+%     thetaRandomLogLineSearch = thetaLogLineSearch;
+%     thetaLogLineSearch= thetaLogLineSearch- t * gradLogistic;
+%     
+% end
+    
+%%%%%%%%% Converting the probabilities that are in YhatLogLineSearch into 0 and 1
+% YhatLogLineSearch= sigmoid(X,thetaLogLineSearch);
+% for i=1:size(YhatLogLineSearch,1)
+%     if YhatLogLineSearch(i)>=0.5
+%         YhatLogLineSearch(i)=1;
+%     else YhatLogLineSearch(i)=0;
+%     end
+% end
+% errorLogisticHessian= size(find(Y==YhatLogLineSearch),1)/ size(Y,1);
